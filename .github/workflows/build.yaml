@@ -8,9 +8,8 @@ jobs:
     steps:
       - name: Install multipass
         run: |
+          sudo adduser $USER sudo
           sudo snap install multipass --classic
-          systemctl list-unit-files
-          sudo systemctl start snap.multipass.libvirt-bin.service
           multipass list
           multipass launch --name foo
           multipass list
