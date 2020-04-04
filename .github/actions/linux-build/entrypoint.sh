@@ -1,6 +1,4 @@
-#!/bin/sh -l
+#!/bin/bash -e
 
-echo "Hello"
-node -v
-ls -l /github/workspace
-ls -l /github/workspace/keeweb
+cd /github/workspace/keeweb
+grunt desktop-linux

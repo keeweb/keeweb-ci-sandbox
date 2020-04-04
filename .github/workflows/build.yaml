@@ -32,14 +32,16 @@ jobs:
           repository: 'keeweb/keeweb'
           ref: 'develop'
           path: 'keeweb'
+      - name: Install npm modules
+        run: |
+          cd keeweb
+          npm ci
+      - name: Download atrifact
+        uses: actions/download-artifact@v1
+        with:
+          name: web-dist
+          path: keeweb/dist
       - uses: ./.github/actions/linux-build
-#      - name: Install npm modules
-#        run: npm ci
-#      - name: Download atrifact
-#        uses: actions/download-artifact@v1
-#        with:
-#          name: web-dist
-#          path: dist
 #      - name: Grunt
 #        run: grunt desktop-linux
 #      - name: ls
