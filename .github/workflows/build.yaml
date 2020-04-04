@@ -12,5 +12,7 @@ jobs:
           ref: 'develop'
       - name: Install npm modules
         run: npm ci
+      - name: Test
+        run: npm test
       - name: Grunt
-        run: grunt --no-sign
+        run: grunt
