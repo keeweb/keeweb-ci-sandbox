@@ -27,11 +27,13 @@ jobs:
 #      - web
     steps:
       - uses: actions/checkout@v2
-      - uses: ./.github/actions/linux-build
 #      - uses: actions/checkout@v2
 #        with:
 #          repository: 'keeweb/keeweb'
 #          ref: 'develop'
+      - name: ls
+        run: ls -l
+      - uses: ./.github/actions/linux-build
 #      - name: Install npm modules
 #        run: npm ci
 #      - name: Download atrifact
