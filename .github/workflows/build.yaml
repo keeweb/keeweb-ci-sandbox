@@ -9,6 +9,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: 'keeweb/keeweb'
+          ref: 'develop'
       - name: Install npm modules
         run: npm ci
       - name: Grunt
