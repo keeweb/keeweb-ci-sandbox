@@ -8,9 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Write keys
+        env:
+          XX: ${{ secrets.XX }}
         run: |
           mkdir keys
-          echo ${{ secrets.XX }} > keys/xx
+          echo ${{ XX }} > keys/xx
           cat keys/xx
           break-here
       - name: Get current git ref
