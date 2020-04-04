@@ -8,11 +8,12 @@ jobs:
   web:
     runs-on: ubuntu-latest
     steps:
+      - name: Get current git ref
+        id: git_ref
+        run: echo ::set-output name=ref::${GITHUB_REF/refs\/tags\//}
       - name: test
-        env:
-          GIT_TAG: ${{ toJson(github) }}
         run: |
-          echo "v=${{ env.GIT_TAG }}"
+          echo "v=${{ steps.git_ref.outputs.ref }}"
           xxx
       - uses: actions/checkout@v2
         with:
