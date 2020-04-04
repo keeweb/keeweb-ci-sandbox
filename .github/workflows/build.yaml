@@ -26,7 +26,8 @@ jobs:
 #    needs:
 #      - web
     steps:
-      - uses: ./.github/actions/build-linux
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/linux-build
 #      - uses: actions/checkout@v2
 #        with:
 #          repository: 'keeweb/keeweb'
