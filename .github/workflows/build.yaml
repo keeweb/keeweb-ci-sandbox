@@ -32,39 +32,37 @@ jobs:
         #run: echo ::set-output name=ref::${GITHUB_REF/refs\/tags\//}
         run: echo ::set-output name=ref::1.13.0
       - uses: actions/checkout@v2
-      - uses: actions/checkout@v2
         with:
           repository: 'keeweb/keeweb'
           ref: 'develop'
-          path: 'keeweb'
       - name: Download atrifact
         uses: actions/download-artifact@v1
         with:
           name: web-dist
-          path: keeweb/dist
+          path: dist
       - uses: ./.github/actions/linux-build
       - name: Upload AppImage artifact
         uses: actions/upload-artifact@v1
         with:
           name: KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.AppImage
-          path: keeweb/dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.AppImage
+          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.AppImage
       - name: Upload snap artifact
         uses: actions/upload-artifact@v1
         with:
           name: KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.snap
-          path: keeweb/dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.snap
+          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.snap
       - name: Upload deb artifact
         uses: actions/upload-artifact@v1
         with:
           name: KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x64.deb
-          path: keeweb/dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x64.deb
+          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x64.deb
       - name: Upload zip artifact
         uses: actions/upload-artifact@v1
         with:
           name: KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x64.zip
-          path: keeweb/dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x64.zip
+          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x64.zip
       - name: Upload rpm artifact
         uses: actions/upload-artifact@v1
         with:
           name: KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x86_64.rpm
-          path: keeweb/dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x86_64.rpm
+          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x86_64.rpm
