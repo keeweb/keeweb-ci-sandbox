@@ -32,6 +32,8 @@ jobs:
           ref: 'develop'
       - name: Install snapcraft
         run: sudo snap install snapcraft --classic
+      - name: Install multipass
+        run: sudo snap install multipass --beta --classic
       - name: Install npm modules
         run: npm ci
       - name: Download atrifact
