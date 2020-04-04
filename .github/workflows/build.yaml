@@ -36,11 +36,11 @@ jobs:
         run: |
           cd keeweb
           npm ci
-      - name: Download atrifact
-        uses: actions/download-artifact@v1
-        with:
-          name: web-dist
-          path: keeweb/dist
+#      - name: Download atrifact
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: web-dist
+#          path: keeweb/dist
       - uses: ./.github/actions/linux-build
 #      - name: Grunt
 #        run: grunt desktop-linux
