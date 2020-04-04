@@ -3,11 +3,13 @@ on:
   push:
     branches: [ master ]
 jobs:
-  dependencies:
+  Install dependencies:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: 'keeweb/keeweb'
+      - name: Grunt
+      - run: npm i -g grunt-cli
+#      - uses: actions/checkout@v2
+#        with:
+#          repository: 'keeweb/keeweb'
       - name: ls
-        run: node -v
+        run: node -v -e 'broken'
