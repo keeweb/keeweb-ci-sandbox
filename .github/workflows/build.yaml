@@ -7,6 +7,10 @@ jobs:
   web:
     runs-on: ubuntu-latest
     steps:
+      - name: Get current git ref
+        id: git_ref
+        #run: echo ::set-output name=ref::${GITHUB_REF/refs\/tags\//}
+        run: echo ::set-output name=ref::1.13.0
       - uses: actions/checkout@v2
         with:
           repository: 'keeweb/keeweb'
@@ -20,7 +24,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
-          name: web-dist
+          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.html.zip
           path: dist
   linux:
     runs-on: ubuntu-latest
@@ -38,7 +42,7 @@ jobs:
       - name: Download atrifact
         uses: actions/download-artifact@v1
         with:
-          name: web-dist
+          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.html.zip
           path: dist
       - uses: ./.github/actions/linux-build
       - name: Upload AppImage artifact
