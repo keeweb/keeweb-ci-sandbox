@@ -14,5 +14,7 @@ jobs:
       - name: Install npm modules
         run: npm ci
   build-web:
+    runs-on: ubuntu-latest
+    steps:
       - name: Grunt
         run: grunt
