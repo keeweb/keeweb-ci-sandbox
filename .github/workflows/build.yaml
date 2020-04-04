@@ -158,7 +158,7 @@ jobs:
           npm ci
           cd ..
       - name: Install grunt
-        run: sudo npm i -g grunt-cli
+        run: npm i -g grunt-cli
       - name: Write secrets
         env:
           CODESIGN: ${{ secrets.CODESIGN }}
