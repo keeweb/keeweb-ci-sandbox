@@ -1,0 +1,16 @@
+name: Build
+on:
+  push:
+    branches: [ master ]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: 'keeweb/keeweb'
+      - name: ls
+        run: |
+          pwd
+          env
+          ls -la
