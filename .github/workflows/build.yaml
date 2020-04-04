@@ -12,4 +12,4 @@ jobs:
       - name: Install npm modules
         run: npm ci
       - name: Grunt
-        run: grunt
+        run: grunt --no-sign
