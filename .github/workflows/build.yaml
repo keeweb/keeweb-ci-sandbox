@@ -164,7 +164,7 @@ jobs:
           CODESIGN: ${{ secrets.CODESIGN }}
         run: |
           mkdir keys
-          echo "$CODESIGN" > keys/codesign.json
+          echo $Env:CODESIGN > keys/codesign.json
       - name: Grunt
         run: grunt desktop-win32
       - name: Upload ia32 exe artifact
