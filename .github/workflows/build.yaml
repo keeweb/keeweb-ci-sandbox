@@ -7,16 +7,6 @@ jobs:
   web:
     runs-on: ubuntu-latest
     steps:
-      - name: Write keys
-        env:
-          XX: ${{ secrets.XX }}
-        run: |
-          mkdir keys
-          echo "$XX" > keys/xx
-          echo "Contents"
-          cat keys/xx
-          echo "End"
-          break-here
       - name: Get current git ref
         id: git_ref
         #run: echo ::set-output name=ref::${GITHUB_REF/refs\/tags\//}
@@ -31,8 +21,6 @@ jobs:
         run: npm test
       - name: Grunt
         run: grunt
-      - name: Grunt desktop
-        run: grunt gitinfo build-desktop-app-content build-desktop-update
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
@@ -56,6 +44,14 @@ jobs:
         with:
           name: KeeWeb-${{ steps.git_ref.outputs.ref }}.html.zip
           path: dist
+      - name: Write secrets
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          KEEWEB_SIGN: ${{ secrets.KEEWEB_SIGN }}
+        run: |
+          mkdir keys
+          echo "$PRIVATE_KEY" > keys/private-key.pem
+          echo "$KEEWEB_SIGN" > keys/keeweb-sign.json
       - uses: ./.github/actions/linux-build
       - name: Upload AppImage artifact
         uses: actions/upload-artifact@v1
