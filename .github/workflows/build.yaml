@@ -3,28 +3,28 @@ on:
   push:
     branches: [ master ]
 jobs:
-#  web:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#        with:
-#          repository: 'keeweb/keeweb'
-#          ref: 'develop'
-#      - name: Install npm modules
-#        run: npm ci
-#      - name: Test
-#        run: npm test
-#      - name: Grunt
-#        run: grunt
-#      - name: Upload artifact
-#        uses: actions/upload-artifact@v1
-#        with:
-#          name: web-dist
-#          path: dist
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: 'keeweb/keeweb'
+          ref: 'develop'
+      - name: Install npm modules
+        run: npm ci
+      - name: Test
+        run: npm test
+      - name: Grunt
+        run: grunt
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: web-dist
+          path: dist
   linux:
     runs-on: ubuntu-latest
-#    needs:
-#      - web
+    needs:
+      - web
     steps:
       - uses: actions/checkout@v2
       - uses: actions/checkout@v2
@@ -32,17 +32,11 @@ jobs:
           repository: 'keeweb/keeweb'
           ref: 'develop'
           path: 'keeweb'
-#      - name: Install npm modules
-#        run: |
-#          cd keeweb
-#          npm ci
-#      - name: Download atrifact
-#        uses: actions/download-artifact@v1
-#        with:
-#          name: web-dist
-#          path: keeweb/dist
+      - name: Download atrifact
+        uses: actions/download-artifact@v1
+        with:
+          name: web-dist
+          path: keeweb/dist
       - uses: ./.github/actions/linux-build
-#      - name: Grunt
-#        run: grunt desktop-linux
       - name: ls
         run: ls -l dist
