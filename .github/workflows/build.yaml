@@ -3,7 +3,7 @@ on:
   push:
     branches: [ master ]
 jobs:
-  build-web:
+  web:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,5 +19,19 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
-          name: dist
+          name: web-dist
           path: dist
+  linux:
+    - uses: actions/checkout@v2
+      with:
+        repository: 'keeweb/keeweb'
+        ref: 'develop'
+    - name: Install npm modules
+      run: npm ci
+    - name: Download atrifact
+      uses: actions/download-artifact@v1
+      with:
+        name: web-dist
+        path: dist
+    - name: Grunt
+      run: ls -la dist
