@@ -44,5 +44,5 @@ jobs:
       - uses: ./.github/actions/linux-build
 #      - name: Grunt
 #        run: grunt desktop-linux
-#      - name: ls
-#        run: ls -l dist
+      - name: ls
+        run: ls -l dist
