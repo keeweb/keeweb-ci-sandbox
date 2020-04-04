@@ -8,9 +8,9 @@ jobs:
     steps:
       - name: test
         env:
-          GIT_TAG: ${{ github.ref }}
+          GIT_TAG: ${{ toJson(github) }}
         run: |
-          echo "v${{ env.GIT_TAG }}"
+          echo "v=${{ env.GIT_TAG }}"
           xxx
       - uses: actions/checkout@v2
         with:
