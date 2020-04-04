@@ -32,10 +32,10 @@ jobs:
           repository: 'keeweb/keeweb'
           ref: 'develop'
           path: 'keeweb'
-#      - name: Install npm modules
-#        run: |
-#          cd keeweb
-#          npm ci
+      - name: Install npm modules
+        run: |
+          cd keeweb
+          npm ci
 #      - name: Download atrifact
 #        uses: actions/download-artifact@v1
 #        with:
