@@ -78,3 +78,8 @@ jobs:
         with:
           name: KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x86_64.rpm
           path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x86_64.rpm
+      - name: Upload update artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: UpdateDesktop.zip
+          path: dist/desktop/UpdateDesktop.zip
