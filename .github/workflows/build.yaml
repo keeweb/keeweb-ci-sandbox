@@ -3,7 +3,7 @@ on:
   push:
     branches: [ master ]
 jobs:
-  install-dependencies:
+  build-web:
     runs-on: ubuntu-latest
     steps:
       - name: Install Grunt CLI
@@ -13,8 +13,5 @@ jobs:
           repository: 'keeweb/keeweb'
       - name: Install npm modules
         run: npm ci
-  build-web:
-    runs-on: ubuntu-latest
-    steps:
       - name: Grunt
         run: grunt
