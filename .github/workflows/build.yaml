@@ -12,7 +12,7 @@ jobs:
           XX: ${{ secrets.XX }}
         run: |
           mkdir keys
-          echo ${{ XX }} > keys/xx
+          echo "$XX" > keys/xx
           cat keys/xx
           break-here
       - name: Get current git ref
