@@ -3,14 +3,11 @@ on:
   push:
     branches: [ master ]
 jobs:
-  publish:
+  dependencies:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           repository: 'keeweb/keeweb'
       - name: ls
-        run: |
-          pwd
-          env
-          ls -la
+        run: node -v
