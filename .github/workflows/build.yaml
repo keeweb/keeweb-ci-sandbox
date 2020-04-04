@@ -38,4 +38,6 @@ jobs:
           name: web-dist
           path: dist
       - name: Grunt
-        run: ls -la dist
+        run: grunt desktop-linux
+      - name: ls
+        run: ls -l dist
