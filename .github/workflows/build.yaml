@@ -6,8 +6,6 @@ jobs:
   build-web:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Grunt CLI
-        run: sudo npm i -g grunt-cli
       - uses: actions/checkout@v2
         with:
           repository: 'keeweb/keeweb'
