@@ -10,6 +10,8 @@ jobs:
         run: |
           sudo adduser $USER sudo
           sudo snap install multipass --classic
+          journalctl -u snap.multipass*
+          multipass info --all
           multipass list
           multipass launch --name foo
           multipass list
