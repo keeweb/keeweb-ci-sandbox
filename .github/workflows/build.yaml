@@ -26,52 +26,7 @@ jobs:
         with:
           name: KeeWeb-${{ steps.git_ref.outputs.ref }}.html.zip
           path: dist
-  darwin:
-    runs-on: macos-latest
-    needs:
-      - web
-    steps:
-      - name: Get current git ref
-        id: git_ref
-        #run: echo ::set-output name=ref::${GITHUB_REF/refs\/tags\//}
-        run: echo ::set-output name=ref::1.13.0
-      - uses: actions/checkout@v2
-        with:
-          repository: 'keeweb/keeweb'
-          ref: 'develop'
-      - name: Download atrifact
-        uses: actions/download-artifact@v1
-        with:
-          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.html.zip
-          path: dist
-      - name: Install npm modules
-        run: |
-          npm ci
-          cd desktop
-          npm ci
-          cd ..
-      - name: Install grunt
-        run: sudo npm i -g grunt-cli
-      - name: Write secrets
-        env:
-          CODESIGN: ${{ secrets.CODESIGN }}
-          APPLE_DEPLOY_PASSWORD: ${{ secrets.APPLE_DEPLOY_PASSWORD }}
-          APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
-        run: |
-          mkdir keys
-          echo "$CODESIGN" > keys/codesign.json
-          xcrun altool --store-password-in-keychain-item "AC_PASSWORD" -u "$APPLE_ID_USERNAME" -p "$APPLE_DEPLOY_PASSWORD"
-      - uses: apple-actions/import-codesign-certs@v1
-        with:
-          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
-          p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-      - name: Grunt
-        run: grunt desktop-darwin
-      - name: Upload dmg artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.mac.dmg
-          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.mac.dmg
+
 #  linux:
 #    runs-on: ubuntu-latest
 #    needs:
@@ -129,3 +84,105 @@ jobs:
 #        with:
 #          name: UpdateDesktop.zip
 #          path: dist/desktop/UpdateDesktop.zip
+
+#  darwin:
+#    runs-on: macos-latest
+#    needs:
+#      - web
+#    steps:
+#      - name: Get current git ref
+#        id: git_ref
+#        #run: echo ::set-output name=ref::${GITHUB_REF/refs\/tags\//}
+#        run: echo ::set-output name=ref::1.13.0
+#      - uses: actions/checkout@v2
+#        with:
+#          repository: 'keeweb/keeweb'
+#          ref: 'develop'
+#      - name: Download atrifact
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.html.zip
+#          path: dist
+#      - name: Install npm modules
+#        run: |
+#          npm ci
+#          cd desktop
+#          npm ci
+#          cd ..
+#      - name: Install grunt
+#        run: sudo npm i -g grunt-cli
+#      - name: Write secrets
+#        env:
+#          CODESIGN: ${{ secrets.CODESIGN }}
+#          APPLE_DEPLOY_PASSWORD: ${{ secrets.APPLE_DEPLOY_PASSWORD }}
+#          APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
+#        run: |
+#          mkdir keys
+#          echo "$CODESIGN" > keys/codesign.json
+#          xcrun altool --store-password-in-keychain-item "AC_PASSWORD" -u "$APPLE_ID_USERNAME" -p "$APPLE_DEPLOY_PASSWORD"
+#      - uses: apple-actions/import-codesign-certs@v1
+#        with:
+#          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
+#          p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+#      - name: Grunt
+#        run: grunt desktop-darwin
+#      - name: Upload dmg artifact
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.mac.dmg
+#          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.mac.dmg
+
+  win32:
+    runs-on: windows-latest
+    needs:
+      - web
+    steps:
+      - name: Get current git ref
+        id: git_ref
+        #run: echo ::set-output name=ref::${GITHUB_REF/refs\/tags\//}
+        run: echo ::set-output name=ref::1.13.0
+      - uses: actions/checkout@v2
+        with:
+          repository: 'keeweb/keeweb'
+          ref: 'develop'
+      - name: Download atrifact
+        uses: actions/download-artifact@v1
+        with:
+          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.html.zip
+          path: dist
+      - name: Install npm modules
+        run: |
+          npm ci
+          cd desktop
+          npm ci
+          cd ..
+      - name: Install grunt
+        run: sudo npm i -g grunt-cli
+      - name: Write secrets
+        env:
+          CODESIGN: ${{ secrets.CODESIGN }}
+        run: |
+          mkdir keys
+          echo "$CODESIGN" > keys/codesign.json
+      - name: Grunt
+        run: grunt desktop-win32
+      - name: Upload ia32 exe artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.win.ia32.exe
+          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.win.ia32.exe
+      - name: Upload ia32 zip artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.win.ia32.zip
+          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.win.ia32.zip
+      - name: Upload x64 exe artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.win.x64.exe
+          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.win.x64.exe
+      - name: Upload x64 zip artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.win.x64.zip
+          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.win.x64.zip
