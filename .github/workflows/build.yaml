@@ -6,6 +6,12 @@ jobs:
   web:
     runs-on: ubuntu-latest
     steps:
+      - name: test
+        env:
+          GIT_TAG: ${{ github.ref }}
+        run: |
+          echo "v${{ env.GIT_TAG }}"
+          xxx
       - uses: actions/checkout@v2
         with:
           repository: 'keeweb/keeweb'
@@ -38,5 +44,8 @@ jobs:
           name: web-dist
           path: keeweb/dist
       - uses: ./.github/actions/linux-build
-      - name: ls
-        run: ls -l dist
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: KeeWeb-1.13.0.linux.AppImage
+          path: dist
