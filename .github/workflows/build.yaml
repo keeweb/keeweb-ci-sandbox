@@ -6,6 +6,12 @@ jobs:
   web:
     runs-on: ubuntu-latest
     steps:
+      - name: Install multipass
+        run: |
+          sudo snap install multipass --beta --classic
+          multipass list
+          multipass launch --name foo
+          multipass list
       - uses: actions/checkout@v2
         with:
           repository: 'keeweb/keeweb'
@@ -33,9 +39,7 @@ jobs:
       - name: Install snapcraft
         run: sudo snap install snapcraft --classic
       - name: Install multipass
-        run: |
-          sudo snap install multipass --beta --classic
-          sudo chmod u+rw /var/snap/multipass/common/multipass_socket
+        run: sudo snap install multipass --beta --classic
       - name: Install npm modules
         run: npm ci
       - name: Download atrifact
