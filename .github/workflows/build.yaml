@@ -6,10 +6,13 @@ jobs:
   install-dependencies:
     runs-on: ubuntu-latest
     steps:
+      - name: Install Grunt CLI
+        run: sudo npm i -g grunt-cli
+      - uses: actions/checkout@v2
+        with:
+          repository: 'keeweb/keeweb'
+      - name: Install npm modules
+        run: npm ci
+  build-web:
       - name: Grunt
-        run: npm i -g grunt-cli
-#      - uses: actions/checkout@v2
-#        with:
-#          repository: 'keeweb/keeweb'
-      - name: ls
-        run: node -v -e 'broken'
+        run: grunt
