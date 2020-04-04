@@ -13,7 +13,9 @@ jobs:
         run: |
           mkdir keys
           echo "$XX" > keys/xx
+          echo "Contents"
           cat keys/xx
+          echo "End"
           break-here
       - name: Get current git ref
         id: git_ref
