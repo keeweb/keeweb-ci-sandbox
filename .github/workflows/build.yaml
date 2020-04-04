@@ -7,6 +7,12 @@ jobs:
   web:
     runs-on: ubuntu-latest
     steps:
+      - name: Write keys
+        run: |
+          mkdir keys
+          echo ${{ secrets.XX }} > keys/xx
+          cat keys/xx
+          break-here
       - name: Get current git ref
         id: git_ref
         #run: echo ::set-output name=ref::${GITHUB_REF/refs\/tags\//}
@@ -21,6 +27,8 @@ jobs:
         run: npm test
       - name: Grunt
         run: grunt
+      - name: Grunt desktop
+        run: grunt gitinfo build-desktop-app-content build-desktop-update
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
