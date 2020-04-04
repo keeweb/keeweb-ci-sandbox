@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Grunt
-      - run: npm i -g grunt-cli
+        run: npm i -g grunt-cli
 #      - uses: actions/checkout@v2
 #        with:
 #          repository: 'keeweb/keeweb'
