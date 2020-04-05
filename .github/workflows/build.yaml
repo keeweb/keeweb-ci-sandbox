@@ -140,6 +140,7 @@ jobs:
         run: |
           cp "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe" .
           dir
+          signtool.exe
 #          "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe" verify /pa /v "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe"
 
 #  win32:
