@@ -138,9 +138,10 @@ jobs:
     steps:
       - name: test
         run: |
+          dir "C:\Program Files (x86)\Windows Kits\10\"
           dir "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\"
-          "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe" verify /pa "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe"
-          "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe" verify /pa /v "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe"
+#          "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe" verify /pa "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe"
+#          "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe" verify /pa /v "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe"
 
 #  win32:
 #    runs-on: windows-latest
