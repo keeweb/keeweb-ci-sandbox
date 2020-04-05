@@ -121,7 +121,7 @@ jobs:
 #          mkdir keys
 #          echo "$CODESIGN" > keys/codesign.json
 #          xcrun altool --store-password-in-keychain-item "AC_PASSWORD" -u "$APPLE_ID_USERNAME" -p "$APPLE_DEPLOY_PASSWORD"
-#      - uses: apple-actions/import-codesign-certs@v1
+#      - uses: keeweb/import-codesign-certs@v1
 #        with:
 #          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
 #          p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
@@ -162,9 +162,16 @@ jobs:
       - name: Write secrets
         env:
           CODESIGN: ${{ secrets.CODESIGN }}
+          MS_CODESIGN_PRIVATE_KEY_CLIENT: ${{ secrets.MS_CODESIGN_PRIVATE_KEY_CLIENT }}
+          MS_CODESIGN_PUBLIC_KEY_CLIENT: ${{ secrets.MS_CODESIGN_PUBLIC_KEY_CLIENT }}
+          MS_CODESIGN_PUBLIC_KEY_SERVER: ${{ secrets.MS_CODESIGN_PUBLIC_KEY_SERVER }}
         run: |
           mkdir keys
           echo $Env:CODESIGN > keys/codesign.json
+          mkdir keys/code-signing
+          echo $Env:MS_CODESIGN_PRIVATE_KEY_CLIENT > keys/code-signing/private-key-client.pem
+          echo $Env:MS_CODESIGN_PUBLIC_KEY_CLIENT > keys/code-signing/public-key-client.pem
+          echo $Env:MS_CODESIGN_PUBLIC_KEY_SERVER > keys/code-signing/public-key-server.pem
       - name: Grunt
         run: grunt desktop-win32
       - name: Upload ia32 exe artifact
