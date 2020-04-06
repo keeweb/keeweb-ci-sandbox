@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Get current git tag
         id: get_tag
-        uses: keeweb/get-tag@v1
+        uses: keeweb/get-tag@062d706659e924dddb3b5e6fdfd1661fa8133ce4
         with:
           tagRegex: "v1(.*)"
           tagRegexGroup: 1
