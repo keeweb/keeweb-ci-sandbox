@@ -17,14 +17,12 @@ jobs:
         with:
           repository: 'keeweb/keeweb'
           ref: 'develop'
-#      - name: Install npm modules
-#        run: npm ci
-#      - name: Test
-#        run: npm test
-#      - name: Grunt
-#        run: grunt
-      - name: Fake build
-        run: mkdir dist && echo hello > dist/index.html
+      - name: Install npm modules
+        run: npm ci
+      - name: Test
+        run: npm test
+      - name: Grunt
+        run: grunt
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
