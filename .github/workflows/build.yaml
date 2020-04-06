@@ -10,6 +10,9 @@ jobs:
       - name: Get current git tag
         id: get_tag
         uses: keeweb/get-tag@v1
+        with:
+          tagRegex: "^v(\d+\.\d+\.\d+)$"
+          tagRegexGroup: 1
       - name: Show the tag
         run: echo tag="${{ steps.get_tag.outputs.tag }}"
 #      - uses: actions/checkout@v2
