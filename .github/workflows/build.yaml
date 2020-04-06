@@ -262,9 +262,7 @@ jobs:
         run: |
           cd gh-pages
           git rm -r '*'
-          cd ..
-          cp -r html/* gh-pages
-          ls gh-pages
+          cp -r ../html/* .
           git add .
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
