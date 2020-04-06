@@ -254,10 +254,10 @@ jobs:
 #        with:
 #          version: ${{ steps.get_tag.outputs.tag }}
 #          release_id: ${{ steps.create_release.outputs.id }}
-#      - name: Checkout gh-pages
-#        uses: actions/checkout@v2
-#        with:
-#          ref: 'gh-pages'
+      - name: Checkout gh-pages
+        uses: actions/checkout@v2
+        with:
+          ref: 'gh-pages'
       - name: Do some changes
         run: |
           git rm -r .
