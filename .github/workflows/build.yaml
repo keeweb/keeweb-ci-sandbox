@@ -261,7 +261,7 @@ jobs:
       - name: Do some changes
         run: |
           git rm -r .
-          cat hello > test.txt
+          echo hello > test.txt
           ls -la .
           git status
           git remote -v
