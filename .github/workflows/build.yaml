@@ -228,36 +228,36 @@ jobs:
         run: |
           cd html
           zip -vr ../KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip .
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Desktop apps v${{ steps.get_tag.outputs.tag }}
-          draft: true
-          prerelease: false
-      - name: Upload html asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
-          asset_name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
-          asset_content_type: application/octet-stream
-      - name: Publish release
-        uses: ./.github/actions/publish-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          version: ${{ steps.get_tag.outputs.tag }}
-          release_id: ${{ steps.create_release.outputs.id }}
-      - name: Checkout gh-pages
-        uses: actions/checkout@v2
-        with:
-          ref: 'gh-pages'
+#      - name: Create release
+#        id: create_release
+#        uses: actions/create-release@latest
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          tag_name: ${{ github.ref }}
+#          release_name: Desktop apps v${{ steps.get_tag.outputs.tag }}
+#          draft: true
+#          prerelease: false
+#      - name: Upload html asset
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+#          asset_path: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
+#          asset_name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
+#          asset_content_type: application/octet-stream
+#      - name: Publish release
+#        uses: ./.github/actions/publish-release
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          version: ${{ steps.get_tag.outputs.tag }}
+#          release_id: ${{ steps.create_release.outputs.id }}
+#      - name: Checkout gh-pages
+#        uses: actions/checkout@v2
+#        with:
+#          ref: 'gh-pages'
       - name: Do some changes
         run: |
           git rm -r .
@@ -267,9 +267,11 @@ jobs:
           git remote -v
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git add .
           git commit -am v${{ steps.get_tag.outputs.tag }}
           git status
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: 'gh-pages'
