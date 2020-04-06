@@ -26,7 +26,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v1
         with:
-          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
+          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html
           path: dist
 
 #  linux:
@@ -47,7 +47,7 @@ jobs:
 #      - name: Download artifact
 #        uses: actions/download-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html
 #          path: dist
 #      - name: Write secrets
 #        env:
@@ -108,7 +108,7 @@ jobs:
 #      - name: Download artifact
 #        uses: actions/download-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html
 #          path: dist
 #      - name: Install npm modules
 #        run: |
@@ -156,7 +156,7 @@ jobs:
 #      - name: Download artifact
 #        uses: actions/download-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html
 #          path: dist
 #      - name: Install npm modules
 #        run: |
@@ -219,7 +219,10 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v1
         with:
-          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
+          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html
+          path: html
+      - name: Zip html
+        run: zip -vr KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip html
       - name: Create release
         id: create_release
         uses: actions/create-release@latest
