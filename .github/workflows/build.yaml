@@ -11,7 +11,7 @@ jobs:
         id: get_tag
         uses: keeweb/get-tag@v1
         with:
-          tagRegex: "^v(\\d+\\.\\d+\\.\\d+)$"
+          tagRegex: "^v(.*)$"
           tagRegexGroup: 1
       - name: Show the tag
         run: echo tag="${{ steps.get_tag.outputs.tag }}"
