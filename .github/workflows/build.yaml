@@ -260,7 +260,7 @@ jobs:
       - name: Do some changes
         run: |
           cd gh-pages
-          git rm -r .
+          git rm -r '*'
           cd ..
           cp html/* gh-pages
           ls gh-pages
@@ -269,7 +269,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git commit -am v${{ steps.get_tag.outputs.tag }}
       - name: Push changes
-        uses: ad-m/github-push-action@master
+        uses: keeweb/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: 'gh-pages'
