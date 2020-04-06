@@ -7,11 +7,11 @@ jobs:
   web:
     runs-on: ubuntu-latest
     steps:
-      - name: Get current git ref
-        id: git_ref
-        uses: keeweb/action-get-tag@v1
+      - name: Get current git tag
+        id: get_tag
+        uses: keeweb/get-tag@v1
       - name: Show the tag
-        run: echo tag="${{ steps.git_ref.outputs.ref }}"
+        run: echo tag="${{ steps.get_tag.outputs.tag }}"
 #      - uses: actions/checkout@v2
 #        with:
 #          repository: 'keeweb/keeweb'
