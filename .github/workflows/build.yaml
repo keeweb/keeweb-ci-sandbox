@@ -222,7 +222,7 @@ jobs:
           name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html
           path: html
       - name: Zip html
-        run: zip -vr KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip html
+        run: zip -vr KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip html/*
       - name: Create release
         id: create_release
         uses: actions/create-release@latest
@@ -231,9 +231,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Desktop apps v${{ steps.get_tag.outputs.tag }}
-          body: |
-            `code` and _text_
-            something else
+          body: ...
           draft: true
           prerelease: false
       - name: Upload html asset
