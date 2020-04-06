@@ -215,7 +215,8 @@ jobs:
           tagRegexGroup: 1
       - uses: actions/checkout@v2
         with:
-          ref: 'gh-pages'
+          repository: 'keeweb/keeweb'
+          ref: 'develop'
       - name: Download artifact
         uses: actions/download-artifact@v1
         with:
@@ -244,3 +245,10 @@ jobs:
           asset_path: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
           asset_name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
           asset_content_type: application/octet-stream
+      - name: Publish release
+        uses: ./.github/actions/publish-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version: ${{ steps.get_tag.outputs.tag }}
+          release_id: ${{ steps.create_release.outputs.id }}
