@@ -13,32 +13,33 @@ jobs:
         with:
           tagRegex: "^v(\\d+\\.\\d+\\.\\d+)$"
           tagRegexGroup: 1
-      - name: Show the tag
-        run: echo tag:${{ steps.get_tag.outputs.tag }}
-#      - uses: actions/checkout@v2
-#        with:
-#          repository: 'keeweb/keeweb'
-#          ref: 'develop'
-#      - name: Install npm modules
-#        run: npm ci
-#      - name: Test
-#        run: npm test
-#      - name: Grunt
-#        run: grunt
-#      - name: Upload artifact
-#        uses: actions/upload-artifact@v1
-#        with:
-#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.html.zip
-#          path: dist
+      - uses: actions/checkout@v2
+        with:
+          repository: 'keeweb/keeweb'
+          ref: 'develop'
+      - name: Install npm modules
+        run: npm ci
+      - name: Test
+        run: npm test
+      - name: Grunt
+        run: grunt
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
+          path: dist
 
 #  linux:
 #    runs-on: ubuntu-latest
 #    needs:
 #      - web
 #    steps:
-#      - name: Get current git ref
-#        id: git_ref
-#        uses: keeweb/action-get-tag@v1
+#      - name: Get current git tag
+#        id: get_tag
+#        uses: keeweb/get-tag@v2
+#        with:
+#          tagRegex: "^v(\\d+\\.\\d+\\.\\d+)$"
+#          tagRegexGroup: 1
 #      - uses: actions/checkout@v2
 #        with:
 #          repository: 'keeweb/keeweb'
@@ -46,7 +47,7 @@ jobs:
 #      - name: Download artifact
 #        uses: actions/download-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.html.zip
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
 #          path: dist
 #      - name: Write secrets
 #        env:
@@ -61,28 +62,28 @@ jobs:
 #      - name: Upload AppImage artifact
 #        uses: actions/upload-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.AppImage
-#          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.AppImage
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.linux.AppImage
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.linux.AppImage
 #      - name: Upload snap artifact
 #        uses: actions/upload-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.snap
-#          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.snap
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.linux.snap
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.linux.snap
 #      - name: Upload deb artifact
 #        uses: actions/upload-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x64.deb
-#          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x64.deb
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.linux.x64.deb
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.linux.x64.deb
 #      - name: Upload zip artifact
 #        uses: actions/upload-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x64.zip
-#          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x64.zip
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.linux.x64.zip
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.linux.x64.zip
 #      - name: Upload rpm artifact
 #        uses: actions/upload-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x86_64.rpm
-#          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.linux.x86_64.rpm
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.linux.x86_64.rpm
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.linux.x86_64.rpm
 #      - name: Upload update artifact
 #        uses: actions/upload-artifact@v1
 #        with:
@@ -94,9 +95,12 @@ jobs:
 #    needs:
 #      - web
 #    steps:
-#      - name: Get current git ref
-#        id: git_ref
-#        uses: keeweb/action-get-tag@v1
+#      - name: Get current git tag
+#        id: get_tag
+#        uses: keeweb/get-tag@v2
+#        with:
+#          tagRegex: "^v(\\d+\\.\\d+\\.\\d+)$"
+#          tagRegexGroup: 1
 #      - uses: actions/checkout@v2
 #        with:
 #          repository: 'keeweb/keeweb'
@@ -104,7 +108,7 @@ jobs:
 #      - name: Download artifact
 #        uses: actions/download-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.html.zip
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
 #          path: dist
 #      - name: Install npm modules
 #        run: |
@@ -132,25 +136,27 @@ jobs:
 #      - name: Upload dmg artifact
 #        uses: actions/upload-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.mac.dmg
-#          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.mac.dmg
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.mac.dmg
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.mac.dmg
 
 #  win32:
 #    runs-on: windows-latest
 #    needs:
 #      - web
 #    steps:
-#      - name: Get current git ref
-#        id: git_ref
-#        uses: keeweb/action-get-tag@v1
-#      - uses: actions/checkout@v2
+#      - name: Get current git tag
+#        id: get_tag
+#        uses: keeweb/get-tag@v2
+#        with:
+#          tagRegex: "^v(\\d+\\.\\d+\\.\\d+)$"
+#          tagRegexGroup: 1
 #        with:
 #          repository: 'keeweb/keeweb'
 #          ref: 'develop'
 #      - name: Download artifact
 #        uses: actions/download-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.html.zip
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
 #          path: dist
 #      - name: Install npm modules
 #        run: |
@@ -178,47 +184,61 @@ jobs:
 #      - name: Upload ia32 exe artifact
 #        uses: actions/upload-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.win.ia32.exe
-#          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.win.ia32.exe
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.exe
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.exe
 #      - name: Upload ia32 zip artifact
 #        uses: actions/upload-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.win.ia32.zip
-#          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.win.ia32.zip
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.zip
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.zip
 #      - name: Upload x64 exe artifact
 #        uses: actions/upload-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.win.x64.exe
-#          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.win.x64.exe
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.exe
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.exe
 #      - name: Upload x64 zip artifact
 #        uses: actions/upload-artifact@v1
 #        with:
-#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.win.x64.zip
-#          path: dist/desktop/KeeWeb-${{ steps.git_ref.outputs.ref }}.win.x64.zip
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.zip
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.zip
 
-#  publish:
-#    runs-on: ubuntu-latest
-#    needs:
-#      - web
-#    steps:
-#      - name: Get current git ref
-#        id: git_ref
-#        uses: keeweb/action-get-tag@v1
-#      - uses: actions/checkout@v2
-#        with:
-#          ref: 'gh-pages'
-#      - name: Download artifact
-#        uses: actions/download-artifact@v1
-#        with:
-#          name: KeeWeb-${{ steps.git_ref.outputs.ref }}.html.zip
-#      - name: Create release
-#        id: create_release
-#        uses: actions/create-release@latest
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          tag_name: ${{ github.ref }}
-#          release_name: Release ${{ github.ref }}
-#          body: Binaries built from ${{ github.sha }}
-#          draft: false
-#          prerelease: false
+  publish:
+    runs-on: ubuntu-latest
+    needs:
+      - web
+    steps:
+      - name: Get current git tag
+        id: get_tag
+        uses: keeweb/get-tag@v2
+        with:
+          tagRegex: "^v(\\d+\\.\\d+\\.\\d+)$"
+          tagRegexGroup: 1
+      - uses: actions/checkout@v2
+        with:
+          ref: 'gh-pages'
+      - name: Download artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Desktop apps v${{ steps.get_tag.outputs.tag }}
+          body: |
+            `code` and _text_
+            something else
+          draft: true
+          prerelease: false
+      - name: Upload html asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
+          asset_name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip
+          asset_content_type: application/octet-stream
