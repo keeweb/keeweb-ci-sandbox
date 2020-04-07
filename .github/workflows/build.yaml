@@ -363,6 +363,7 @@ jobs:
         with:
           ref: gh-pages
           path: gh-pages
+          fetch-depth: 0
       - name: Commit dist to gh-pages
         run: |
           cd gh-pages
@@ -382,6 +383,6 @@ jobs:
           branch: gh-pages
           directory: gh-pages
       - name: Restore git mtime
-        run: cd gh-pages && python3 keeweb/.github/actions/scripts/git-restore-mtime.py
+        run: cd gh-pages && python3 ../keeweb/.github/actions/scripts/git-restore-mtime.py
       - name: Sync
         run: gsutil -m rsync -r -d -x "^\." gh-pages gs://beta2.keeweb.info/
