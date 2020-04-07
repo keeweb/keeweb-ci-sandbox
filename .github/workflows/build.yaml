@@ -296,6 +296,8 @@ jobs:
           cd gh-pages
           git rm -r '*'
           cp -r ../html/* .
+          mkdir -p .github/workflows
+          curl -sS https://raw.githubusercontent.com/keeweb/keeweb-ci-sandbox/master/.github/workflows/deploy.yaml > .github/workflows/deploy.yaml
           echo $GITHUB_SHA > build.txt
           date >> build.txt
           git add .
