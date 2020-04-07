@@ -1,0 +1,10 @@
+name: Deploy
+on:
+  push:
+    branches: [ 'gh-pages' ]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log
+        run: echo 'Hello! I'm deploying something here'
