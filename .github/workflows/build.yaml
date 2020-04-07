@@ -15,8 +15,8 @@ jobs:
           tagRegexGroup: 1
       - uses: actions/checkout@v2
         with:
-          repository: 'keeweb/keeweb'
-          ref: 'develop'
+          repository: keeweb/keeweb
+          ref: develop
       - name: Install npm modules
         run: npm ci
       - name: Test
@@ -42,8 +42,8 @@ jobs:
           tagRegexGroup: 1
       - uses: actions/checkout@v2
         with:
-          repository: 'keeweb/keeweb'
-          ref: 'develop'
+          repository: keeweb/keeweb
+          ref: develop
       - name: Download artifact
         uses: actions/download-artifact@v1
         with:
@@ -103,8 +103,8 @@ jobs:
           tagRegexGroup: 1
       - uses: actions/checkout@v2
         with:
-          repository: 'keeweb/keeweb'
-          ref: 'develop'
+          repository: keeweb/keeweb
+          ref: develop
       - name: Download artifact
         uses: actions/download-artifact@v1
         with:
@@ -206,6 +206,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - linux
+      - darwin
     steps:
       - name: Get current git tag
         id: get_tag
@@ -215,7 +216,7 @@ jobs:
           tagRegexGroup: 1
       - uses: actions/checkout@v2
         with:
-          repository: 'keeweb/keeweb'
+          repository: keeweb/keeweb
           ref: develop
           path: keeweb
       - name: Download html artifact
@@ -247,6 +248,11 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: KeeWeb-${{ steps.get_tag.outputs.tag }}.linux.x86_64.rpm
+          path: assets
+      - name: Download darwin.dmg artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.mac.dmg
           path: assets
       - name: Download update artifact
         uses: actions/download-artifact@v1
@@ -368,5 +374,5 @@ jobs:
         uses: keeweb/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: 'gh-pages'
-          directory: 'gh-pages'
+          branch: gh-pages
+          directory: gh-pages
