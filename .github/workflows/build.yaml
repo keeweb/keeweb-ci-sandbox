@@ -214,6 +214,12 @@ jobs:
         with:
           tagRegex: "^v(\\d+\\.\\d+\\.\\d+)$"
           tagRegexGroup: 1
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '285.0.0'
+          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
       - uses: actions/checkout@v2
         with:
           repository: keeweb/keeweb
@@ -363,7 +369,6 @@ jobs:
           git rm -r '*'
           cp -r ../html/* .
           mkdir -p .github/workflows
-          curl -sS https://raw.githubusercontent.com/keeweb/keeweb-ci-sandbox/master/.github/workflows/deploy.yaml > .github/workflows/deploy.yaml
           echo $GITHUB_SHA > build.txt
           date >> build.txt
           git add .
@@ -376,3 +381,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
           directory: gh-pages
+      - name: Restore git mtime
+        run: cd gh-pages && python3 keeweb/.github/actions/scripts/git-restore-mtime.py
+      - name: Sync
+        run: gsutil -m rsync -r -d -x "^\." gh-pages gs://beta2.keeweb.info/
