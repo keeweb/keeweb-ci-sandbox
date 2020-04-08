@@ -224,6 +224,9 @@ jobs:
           repository: keeweb/keeweb
           ref: develop
           path: keeweb
+      - name: Install npm modules
+        working-directory: keeweb
+        run: npm ci
       - name: Download html artifact
         uses: actions/download-artifact@v1
         with:
@@ -265,9 +268,13 @@ jobs:
           name: UpdateDesktop.zip
           path: assets
       - name: Zip html
-        run: |
-          cd html
-          zip -vr ../assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip .
+        working-directory: html
+        run: zip -vr ../assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip .
+      - name: Copy assets to dist
+        run: mkdir -p keeweb/dist/desktop && cp assets/* keeweb/dist/desktop
+      - name: Finalize the release
+        working-directory: keeweb
+        run: grunt finish-release
       - name: Create release
         id: create_release
         uses: actions/create-release@latest
@@ -364,8 +371,8 @@ jobs:
           path: gh-pages
           fetch-depth: 0
       - name: Commit dist to gh-pages
+        working-directory: gh-pages
         run: |
-          cd gh-pages
           git rm -r '*'
           cp -r ../html/* .
           mkdir -p .github/workflows
@@ -382,6 +389,7 @@ jobs:
           branch: gh-pages
           directory: gh-pages
       - name: Restore git mtime
-        run: cd gh-pages && python3 ../keeweb/.github/actions/scripts/git-restore-mtime.py
+        working-directory: gh-pages
+        run: python3 ../keeweb/.github/actions/scripts/git-restore-mtime.py
       - name: Sync
         run: gsutil -m rsync -r -d -x "^\." gh-pages gs://beta2.keeweb.info/
