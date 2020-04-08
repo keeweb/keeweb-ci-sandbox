@@ -90,54 +90,54 @@ jobs:
           name: UpdateDesktop.zip
           path: dist/desktop/UpdateDesktop.zip
 
-  darwin:
-    runs-on: macos-latest
-    needs:
-      - web
-    steps:
-      - name: Get current git tag
-        id: get_tag
-        uses: keeweb/get-tag@v2
-        with:
-          tagRegex: "^v(\\d+\\.\\d+\\.\\d+)$"
-          tagRegexGroup: 1
-      - uses: actions/checkout@v2
-        with:
-          repository: keeweb/keeweb
-          ref: develop
-      - name: Download artifact
-        uses: actions/download-artifact@v1
-        with:
-          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html
-          path: dist
-      - name: Install npm modules
-        run: |
-          npm ci
-          cd desktop
-          npm ci
-          cd ..
-      - name: Install grunt
-        run: sudo npm i -g grunt-cli
-      - name: Write secrets
-        env:
-          CODESIGN: ${{ secrets.CODESIGN }}
-          APPLE_DEPLOY_PASSWORD: ${{ secrets.APPLE_DEPLOY_PASSWORD }}
-          APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
-        run: |
-          mkdir keys
-          echo "$CODESIGN" > keys/codesign.json
-          xcrun altool --store-password-in-keychain-item "AC_PASSWORD" -u "$APPLE_ID_USERNAME" -p "$APPLE_DEPLOY_PASSWORD"
-      - uses: keeweb/import-codesign-certs@v1
-        with:
-          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
-          p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
-      - name: Grunt
-        run: grunt desktop-darwin
-      - name: Upload dmg artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.mac.dmg
-          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.mac.dmg
+#  darwin:
+#    runs-on: macos-latest
+#    needs:
+#      - web
+#    steps:
+#      - name: Get current git tag
+#        id: get_tag
+#        uses: keeweb/get-tag@v2
+#        with:
+#          tagRegex: "^v(\\d+\\.\\d+\\.\\d+)$"
+#          tagRegexGroup: 1
+#      - uses: actions/checkout@v2
+#        with:
+#          repository: keeweb/keeweb
+#          ref: develop
+#      - name: Download artifact
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html
+#          path: dist
+#      - name: Install npm modules
+#        run: |
+#          npm ci
+#          cd desktop
+#          npm ci
+#          cd ..
+#      - name: Install grunt
+#        run: sudo npm i -g grunt-cli
+#      - name: Write secrets
+#        env:
+#          CODESIGN: ${{ secrets.CODESIGN }}
+#          APPLE_DEPLOY_PASSWORD: ${{ secrets.APPLE_DEPLOY_PASSWORD }}
+#          APPLE_ID_USERNAME: ${{ secrets.APPLE_ID_USERNAME }}
+#        run: |
+#          mkdir keys
+#          echo "$CODESIGN" > keys/codesign.json
+#          xcrun altool --store-password-in-keychain-item "AC_PASSWORD" -u "$APPLE_ID_USERNAME" -p "$APPLE_DEPLOY_PASSWORD"
+#      - uses: keeweb/import-codesign-certs@v1
+#        with:
+#          p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
+#          p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+#      - name: Grunt
+#        run: grunt desktop-darwin
+#      - name: Upload dmg artifact
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.mac.dmg
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.mac.dmg
 
 #  win32:
 #    runs-on: windows-latest
@@ -272,9 +272,28 @@ jobs:
         run: zip -vr ../assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip .
       - name: Copy assets to dist
         run: mkdir -p keeweb/dist/desktop && cp assets/* keeweb/dist/desktop
-      - name: Finalize the release
+      - name: Write secrets
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          KEEWEB_SIGN: ${{ secrets.KEEWEB_SIGN }}
+        working-directory: keeweb
+        run: |
+          mkdir keys
+          echo "$PRIVATE_KEY" > keys/private-key.pem
+          echo "$KEEWEB_SIGN" > keys/keeweb-sign.json
+      - name: List
+        working-directory: keeweb
+        run: |
+          ls -l
+          ls -l dist
+          ls -l dist/desktop
+      - name: Grunt
         working-directory: keeweb
         run: grunt finish-release
+      - name: Copy signatures to assets
+        run: |
+          cp keeweb/dist/desktop/dist/desktop/Verify.sign.sha256 assets
+          cp keeweb/dist/desktop/dist/desktop/Verify.sha256 assets
       - name: Create release
         id: create_release
         uses: actions/create-release@latest
@@ -339,15 +358,15 @@ jobs:
           asset_path: assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.linux.x86_64.rpm
           asset_name: KeeWeb-${{ steps.get_tag.outputs.tag }}.linux.x86_64.rpm
           asset_content_type: application/octet-stream
-      - name: Upload darwin.dmg asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.mac.dmg
-          asset_name: KeeWeb-${{ steps.get_tag.outputs.tag }}.mac.dmg
-          asset_content_type: application/octet-stream
+#      - name: Upload darwin.dmg asset
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+#          asset_path: assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.mac.dmg
+#          asset_name: KeeWeb-${{ steps.get_tag.outputs.tag }}.mac.dmg
+#          asset_content_type: application/octet-stream
       - name: Upload update asset
         uses: actions/upload-release-asset@v1
         env:
@@ -356,6 +375,24 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: assets/UpdateDesktop.zip
           asset_name: UpdateDesktop.zip
+          asset_content_type: application/octet-stream
+      - name: Upload verify.sign asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: assets/Verify.sign.sha256
+          asset_name: Verify.sign.sha256
+          asset_content_type: application/octet-stream
+      - name: Upload verify.sha asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: assets/Verify.sha256
+          asset_name: Verify.sha256
           asset_content_type: application/octet-stream
       - name: Publish release
         uses: ./keeweb/.github/actions/publish-release
