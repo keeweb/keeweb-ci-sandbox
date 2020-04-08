@@ -292,8 +292,8 @@ jobs:
         run: grunt finish-release
       - name: Copy signatures to assets
         run: |
-          cp keeweb/dist/desktop/dist/desktop/Verify.sign.sha256 assets
-          cp keeweb/dist/desktop/dist/desktop/Verify.sha256 assets
+          cp keeweb/dist/desktop/Verify.sign.sha256 assets
+          cp keeweb/dist/desktop/Verify.sha256 assets
       - name: Create release
         id: create_release
         uses: actions/create-release@latest
