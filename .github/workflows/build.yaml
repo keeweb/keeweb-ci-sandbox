@@ -322,8 +322,8 @@ jobs:
         run: docker build -t antelle/keeweb-test:latest package/docker
       - name: Tag the Docker image
         run: docker tag antelle/keeweb-test:latest antelle/keeweb-test:${{ steps.get_tag.outputs.tag }}
-      - name: Push the Docker image to the registry
-        run: docker push antelle/keeweb-test
+#      - name: Push the Docker image to the registry
+#        run: docker push antelle/keeweb-test
       - name: Create release
         id: create_release
         uses: actions/create-release@latest
@@ -403,8 +403,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.win32.ia32.exe
-          asset_name: KeeWeb-${{ steps.get_tag.outputs.tag }}.ia32.exe
+          asset_path: assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.exe
+          asset_name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.exe
           asset_content_type: application/octet-stream
       - name: Upload win32.ia32.zip asset
         uses: actions/upload-release-asset@v1
@@ -412,8 +412,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.win32.ia32.zip
-          asset_name: KeeWeb-${{ steps.get_tag.outputs.tag }}.ia32.zip
+          asset_path: assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.zip
+          asset_name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.zip
           asset_content_type: application/octet-stream
       - name: Upload win32.x64.exe asset
         uses: actions/upload-release-asset@v1
@@ -421,8 +421,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.win32.x64.exe
-          asset_name: KeeWeb-${{ steps.get_tag.outputs.tag }}.x64.exe
+          asset_path: assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.exe
+          asset_name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.exe
           asset_content_type: application/octet-stream
       - name: Upload win32.x64.zip asset
         uses: actions/upload-release-asset@v1
@@ -430,8 +430,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.win32.x64.zip
-          asset_name: KeeWeb-${{ steps.get_tag.outputs.tag }}.x64.zip
+          asset_path: assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.zip
+          asset_name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.zip
           asset_content_type: application/octet-stream
       - name: Upload update asset
         uses: actions/upload-release-asset@v1
