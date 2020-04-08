@@ -301,7 +301,7 @@ jobs:
       - name: Tag the Docker image
         run: docker tag antelle/keeweb-test:latest antelle/keeweb-test:${{ steps.get_tag.outputs.tag }}
       - name: Push the Docker image to the registry
-        run: docker push antelle/keeweb-test:${{ steps.get_tag.outputs.tag }}
+        run: docker push antelle/keeweb-test
       - name: Create release
         id: create_release
         uses: actions/create-release@latest
