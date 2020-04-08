@@ -206,7 +206,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - linux
-      - darwin
+#      - darwin
     steps:
       - name: Get current git tag
         id: get_tag
