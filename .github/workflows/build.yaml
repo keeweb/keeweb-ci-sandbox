@@ -281,12 +281,6 @@ jobs:
           mkdir keys
           echo "$PRIVATE_KEY" > keys/private-key.pem
           echo "$KEEWEB_SIGN" > keys/keeweb-sign.json
-      - name: List
-        working-directory: keeweb
-        run: |
-          ls -l
-          ls -l dist
-          ls -l dist/desktop
       - name: Grunt
         working-directory: keeweb
         run: grunt finish-release
@@ -294,6 +288,20 @@ jobs:
         run: |
           cp keeweb/dist/desktop/Verify.sign.sha256 assets
           cp keeweb/dist/desktop/Verify.sha256 assets
+      - name: Login to DockerHub Registry
+        env:
+          DOCKERHUB_ACCESS_TOKEN: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        run: echo $DOCKERHUB_ACCESS_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin
+      - name: Copy dist to the Docker context
+        run: cp -r html keeweb/package/docker/dist
+      - name: Build the Docker image
+        working-directory: keeweb
+        run: docker build -t antelle/keeweb-test:latest package/docker
+      - name: Tag the Docker image
+        run: docker tag antelle/keeweb-test:latest antelle/keeweb-test:${{ steps.get_tag.outputs.tag }}
+      - name: Push the Docker image to the registry
+        run: docker push antelle/keeweb-test:${{ steps.get_tag.outputs.tag }}
       - name: Create release
         id: create_release
         uses: actions/create-release@latest
