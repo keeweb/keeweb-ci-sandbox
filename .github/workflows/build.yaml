@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: keeweb/keeweb
-          ref: develop
+          ref: ${{ secrets.KW_CI_DEBUG_REF || github.sha }}
       - name: Install npm modules
         run: npm ci
       - name: Test
@@ -43,7 +43,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: keeweb/keeweb
-          ref: develop
+          ref: ${{ secrets.KW_CI_DEBUG_REF || github.sha }}
       - name: Download artifact
         uses: actions/download-artifact@v1
         with:
@@ -104,18 +104,17 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: keeweb/keeweb
-          ref: develop
+          ref: ${{ secrets.KW_CI_DEBUG_REF || github.sha }}
       - name: Download artifact
         uses: actions/download-artifact@v1
         with:
           name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html
           path: dist
       - name: Install npm modules
-        run: |
-          npm ci
-          cd desktop
-          npm ci
-          cd ..
+        run: npm ci
+      - name: Install desktop npm modules
+        working-directory: desktop
+        run: npm ci
       - name: Install grunt
         run: sudo npm i -g grunt-cli
       - name: Write secrets
@@ -152,19 +151,18 @@ jobs:
           tagRegexGroup: 1
       - uses: actions/checkout@v2
         with:
-          repository: 'keeweb/keeweb'
-          ref: 'develop'
+          repository: keeweb/keeweb
+          ref: ${{ secrets.KW_CI_DEBUG_REF || github.sha }}
       - name: Download artifact
         uses: actions/download-artifact@v1
         with:
           name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html
           path: dist
       - name: Install npm modules
-        run: |
-          npm ci
-          cd desktop
-          npm ci
-          cd ..
+        run: npm ci
+      - name: Install desktop npm modules
+        working-directory: desktop
+        run: npm ci
       - name: Install grunt
         run: npm i -g grunt-cli
       - name: Write secrets
@@ -224,8 +222,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: keeweb/keeweb
-          ref: develop
           path: keeweb
+          ref: ${{ secrets.KW_CI_DEBUG_REF || github.sha }}
       - name: Install npm modules
         working-directory: keeweb
         run: npm ci
@@ -307,9 +305,9 @@ jobs:
         working-directory: keeweb
         run: grunt finish-release
       - name: Copy signatures to assets
-        run: |
-          cp keeweb/dist/desktop/Verify.sign.sha256 assets
-          cp keeweb/dist/desktop/Verify.sha256 assets
+        run: cp keeweb/dist/desktop/Verify.sign.sha256 assets
+      - name: Copy checksums to assets
+        run: cp keeweb/dist/desktop/Verify.sha256 assets
       - name: Login to DockerHub Registry
         env:
           DOCKERHUB_ACCESS_TOKEN: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
@@ -319,12 +317,13 @@ jobs:
         run: cp -r html keeweb/package/docker/dist
       - name: Build the Docker image
         working-directory: keeweb
-        run: docker build -t antelle/keeweb-test:latest package/docker
+        run: docker build -t antelle/keeweb:latest package/docker
       - name: Tag the Docker image
-        run: docker tag antelle/keeweb-test:latest antelle/keeweb-test:${{ steps.get_tag.outputs.tag }}
-#      - name: Push the Docker image to the registry
-#        run: docker push antelle/keeweb-test
-      - name: Create release
+        run: docker tag antelle/keeweb:latest antelle/keeweb:${{ steps.get_tag.outputs.tag }}
+      - name: Push the Docker image to the registry
+        if: ${{ github.repository == 'keeweb/keeweb' }}
+        run: docker push antelle/keeweb
+      - name: Create a GitHub release
         id: create_release
         uses: actions/create-release@latest
         env:
@@ -460,7 +459,7 @@ jobs:
           asset_path: assets/Verify.sha256
           asset_name: Verify.sha256
           asset_content_type: application/octet-stream
-      - name: Publish release
+      - name: Publish the GitHub release
         uses: ./keeweb/.github/actions/publish-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -494,5 +493,6 @@ jobs:
       - name: Restore git mtime
         working-directory: gh-pages
         run: python3 ../keeweb/.github/actions/scripts/git-restore-mtime.py
-      - name: Sync
-        run: gsutil -m rsync -r -d -x "^\." gh-pages gs://beta2.keeweb.info/
+      - name: Sync the website
+        if: ${{ github.repository == 'keeweb/keeweb' }}
+        run: gsutil -m rsync -r -d -x "^\." gh-pages gs://app.keeweb.info/
