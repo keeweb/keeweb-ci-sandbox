@@ -1,7 +1,9 @@
 #!/usr/bin/env sh
 
-git tag -d v$1
-git push --delete origin v$1
+TAG=$(node -p "require('../keeweb/package.json').version")
+
+git tag -d v$TAG
+git push --delete origin v$TAG
 git commit -am ci
-git tag v$1 -m tag
+git tag v$TAG -m tag
 git push --follow-tags
