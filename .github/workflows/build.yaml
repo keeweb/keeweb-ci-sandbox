@@ -149,67 +149,67 @@ jobs:
         with:
           tagRegex: "^v(\\d+\\.\\d+\\.\\d+)$"
           tagRegexGroup: 1
-      - uses: actions/checkout@v2
-        with:
-          repository: keeweb/keeweb
-          ref: ${{ secrets.KW_CI_DEBUG_REF || github.sha }}
-      - name: Download artifact
-        uses: actions/download-artifact@v1
-        with:
-          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html
-          path: dist
-      - name: Install npm modules
-        run: npm ci
-      - name: Install desktop npm modules
-        working-directory: desktop
-        run: npm ci
-      - name: Install grunt
-        run: npm i -g grunt-cli
-      - name: Write secrets
-        env:
-          CODESIGN: ${{ secrets.CODESIGN }}
-          MS_CODESIGN_PRIVATE_KEY_CLIENT: ${{ secrets.MS_CODESIGN_PRIVATE_KEY_CLIENT }}
-          MS_CODESIGN_PUBLIC_KEY_CLIENT: ${{ secrets.MS_CODESIGN_PUBLIC_KEY_CLIENT }}
-          MS_CODESIGN_PUBLIC_KEY_SERVER: ${{ secrets.MS_CODESIGN_PUBLIC_KEY_SERVER }}
-        run: |
-          mkdir keys
-          echo $Env:CODESIGN > keys/codesign.json
-          mkdir keys/code-signing
-          echo $Env:MS_CODESIGN_PRIVATE_KEY_CLIENT > keys/code-signing/private-key-client.pem
-          echo $Env:MS_CODESIGN_PUBLIC_KEY_CLIENT > keys/code-signing/public-key-client.pem
-          echo $Env:MS_CODESIGN_PUBLIC_KEY_SERVER > keys/code-signing/public-key-server.pem
-      - name: Grunt
-        run: grunt desktop-win32
-      - name: Upload ia32 exe artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.exe
-          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.exe
-      - name: Upload ia32 zip artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.zip
-          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.zip
-      - name: Upload x64 exe artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.exe
-          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.exe
-      - name: Upload x64 zip artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.zip
-          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.zip
-      - name: Upload arm64 exe artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.arm64.exe
-          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.arm64.exe
-      - name: Upload arm64 zip artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.arm64.zip
-          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.arm64.zip
+#      - uses: actions/checkout@v2
+#        with:
+#          repository: keeweb/keeweb
+#          ref: ${{ secrets.KW_CI_DEBUG_REF || github.sha }}
+#      - name: Download artifact
+#        uses: actions/download-artifact@v1
+#        with:
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html
+#          path: dist
+#      - name: Install npm modules
+#        run: npm ci
+#      - name: Install desktop npm modules
+#        working-directory: desktop
+#        run: npm ci
+#      - name: Install grunt
+#        run: npm i -g grunt-cli
+#      - name: Write secrets
+#        env:
+#          CODESIGN: ${{ secrets.CODESIGN }}
+#          MS_CODESIGN_PRIVATE_KEY_CLIENT: ${{ secrets.MS_CODESIGN_PRIVATE_KEY_CLIENT }}
+#          MS_CODESIGN_PUBLIC_KEY_CLIENT: ${{ secrets.MS_CODESIGN_PUBLIC_KEY_CLIENT }}
+#          MS_CODESIGN_PUBLIC_KEY_SERVER: ${{ secrets.MS_CODESIGN_PUBLIC_KEY_SERVER }}
+#        run: |
+#          mkdir keys
+#          echo $Env:CODESIGN > keys/codesign.json
+#          mkdir keys/code-signing
+#          echo $Env:MS_CODESIGN_PRIVATE_KEY_CLIENT > keys/code-signing/private-key-client.pem
+#          echo $Env:MS_CODESIGN_PUBLIC_KEY_CLIENT > keys/code-signing/public-key-client.pem
+#          echo $Env:MS_CODESIGN_PUBLIC_KEY_SERVER > keys/code-signing/public-key-server.pem
+#      - name: Grunt
+#        run: grunt desktop-win32
+#      - name: Upload ia32 exe artifact
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.exe
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.exe
+#      - name: Upload ia32 zip artifact
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.zip
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.ia32.zip
+#      - name: Upload x64 exe artifact
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.exe
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.exe
+#      - name: Upload x64 zip artifact
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.zip
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.x64.zip
+#      - name: Upload arm64 exe artifact
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.arm64.exe
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.arm64.exe
+#      - name: Upload arm64 zip artifact
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: KeeWeb-${{ steps.get_tag.outputs.tag }}.win.arm64.zip
+#          path: dist/desktop/KeeWeb-${{ steps.get_tag.outputs.tag }}.win.arm64.zip
 
   publish:
     runs-on: ubuntu-latest
