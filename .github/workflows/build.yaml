@@ -29,6 +29,15 @@ jobs:
         with:
           name: KeeWeb-${{ steps.get_tag.outputs.tag }}.html
           path: dist
+      - name: Write secrets
+        env:
+          VIRUS_TOTAL: ${{ secrets.VIRUS_TOTAL }}
+        run: |
+          mkdir keys
+          echo "$VIRUS_TOTAL" > keys/virus-total.json
+      - name: Check on VirusTotal
+        run: grunt virustotal
+        if: ${{ github.repository == 'keeweb/keeweb' }}
 
   linux:
     runs-on: ubuntu-latest
@@ -135,7 +144,7 @@ jobs:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATE }}
           p12-password: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
       - name: Grunt
-        run: grunt desktop-darwin
+        run: grunt desktop-darwin ${{ github.repository != 'keeweb/keeweb' && '--skip-sign' || '' }}
       - name: Upload x64 dmg artifact
         uses: actions/upload-artifact@v1
         with:
