@@ -19,7 +19,9 @@ jobs:
           repository: keeweb/keeweb
           ref: ${{ github.repository == 'keeweb/keeweb' && github.sha || 'develop' }}
       - name: Install npm modules
-        run: npm ci
+        run: |
+          npm -v
+          npm ci
       - name: Test
         run: npm test
       - name: Grunt
