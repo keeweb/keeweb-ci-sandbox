@@ -18,8 +18,13 @@ jobs:
         with:
           repository: keeweb/keeweb
           ref: ${{ github.repository == 'keeweb/keeweb' && github.sha || 'develop' }}
+      - name: Upgrade Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
       - name: Install npm modules
         run: |
+          node -v
           npm -v
           npm ci
       - name: Test
