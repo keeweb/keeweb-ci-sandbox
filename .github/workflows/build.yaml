@@ -333,7 +333,9 @@ jobs:
 #          path: assets
       - name: Zip html
         working-directory: html
-        run: zip -vr ../assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip .
+        run: |
+          mkdir ../assets
+          zip -vr ../assets/KeeWeb-${{ steps.get_tag.outputs.tag }}.html.zip .
 #      - name: Copy assets to dist
 #        run: mkdir -p keeweb/dist/desktop && cp assets/* keeweb/dist/desktop
 #      - name: Write secrets
