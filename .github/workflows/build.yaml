@@ -228,6 +228,8 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
+    needs:
+      - web
 #    needs:
 #      - linux
 #      - darwin
