@@ -223,10 +223,10 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    needs:
-      - linux
-      - darwin
-      - win32
+#    needs:
+#      - linux
+#      - darwin
+#      - win32
     steps:
       - name: Get current git tag
         id: get_tag
