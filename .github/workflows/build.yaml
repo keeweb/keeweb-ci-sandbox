@@ -381,7 +381,7 @@ jobs:
         run: node util/extract-release-notes.js --version=${{ steps.get_tag.outputs.tag }} --output=tmp/release-body.md
         working-directory: keeweb
       - name: Publish GitHub release
-        uses: softprops/action-gh-release@v0.1.5
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
